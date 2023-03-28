@@ -1,6 +1,6 @@
 # LinuxKeyboardSimulator
 
-Cilj programa je napraviti simulaciju tastature. Program je napisan u C i assembly, i to za Linux 0.0.1.  
+Cilj programa je napraviti simulaciju tastature. Program je napisan u C i assembly.  
 
 Program podržava sledeće funkcionalnosti:
 
