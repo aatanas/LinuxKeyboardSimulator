@@ -18,17 +18,17 @@ Program podržava sledeće funkcionalnosti:
 ### Opis sistema
 
 Kod svake tastature, pritisak i otpuštanje tastera se vezuje za
-jedinstveni broj - scan code (***sc***  dalje u tekstu). Tastatura
-operativnom sistemu prosleđuje ***sc***  pri svakom pritisku ili otpuštanju
+jedinstveni broj - scan code (*sc*  dalje u tekstu). Tastatura
+operativnom sistemu prosleđuje *sc*  pri svakom pritisku ili otpuštanju
 tastera, operativni sistem ih tumači i prosleđuje dalje aplikacijama. U
 ovoj simulaciji, posebni tasteri - shift, ctrl i alt će imati fiksirane
-***sc*** . Za sve ostale tastere postoji spisak koji je naveden u datoteci
-scancodes.tbl koji navodi odgovarajući ***sc***  za sva "mala" i "velika"
+*sc* . Za sve ostale tastere postoji spisak koji je naveden u datoteci
+scancodes.tbl koji navodi odgovarajući *sc*  za sva "mala" i "velika"
 slova.
 
 
 
-Fiksirane ***sc***  vrednosti:
+Fiksirane *sc*  vrednosti:
 
 | \-   | shift | ctrl | alt |
 | ---- | ----- | ---- | --- |
@@ -46,7 +46,7 @@ uz ctrl taster.
 Program treba prvo da pročita dve datoteke koje opisuju konfiguraciju
 sistema - scancodes.tbl i ctrl.map. Nakon toga program počinje sa
 interaktivnim radom i korisnik unosi naziv datoteke (na primer:
-test1.tst) koja sadrži niz ***sc***  vrednosti. Ovi ***sc***  se tumače i
+test1.tst) koja sadrži niz *sc*  vrednosti. Ovi *sc*  se tumače i
 odgovarajući rezultat se ispisuje na ekranu. Tastatura ima četiri režima
 rada:
 
@@ -62,7 +62,7 @@ rada:
 - Pritisnuto alt - unosi se ASCII kod.
 
 *Napomena:* kod kontrolnog tastera alt se rezultat prikazuje tek kada se
-pročita ***sc***  za otpuštanje tog tastera (302).
+pročita *sc*  za otpuštanje tog tastera (302).
 
 ### Ulazni podaci
 
@@ -77,7 +77,7 @@ Ulazni podaci se navode preko tri odvojene datoteke:
 #### scancodes.tbl
 
 U ovom sistemu, datoteka scancodes.tbl će da ima spisak karaktera koji
-treba da se vežu za ***sc*** , pritom, ***sc***  karaktera je dat implicitno -
+treba da se vežu za *sc* , pritom, *sc*  karaktera je dat implicitno -
 počinje od 0 i inkrementira se za 1 za svaki karakter. Spisak karaktera
 za "mala" i "velika" slova je odvojen znakom za novi red.
 
@@ -88,11 +88,11 @@ abcd()1234
 ABCD{}!"\#\$ 
 ```
 
-Ovo bi bila datoteka koja opisuje sistem sa 10 ***sc*** . Karakter 'a' je
-opisan sa ***sc***  0, karakter 'b' sa ***sc***  1, i tako dalje, do karaktera
-'\$' koji je opisan sa ***sc***  9 dok je pritisnuto shift.
+Ovo bi bila datoteka koja opisuje sistem sa 10 *sc* . Karakter 'a' je
+opisan sa *sc*  0, karakter 'b' sa *sc*  1, i tako dalje, do karaktera
+'\$' koji je opisan sa *sc*  9 dok je pritisnuto shift.
 
-Maksimalan broj ***sc***  u sistemu je 128.
+Maksimalan broj *sc*  u sistemu je 128.
 
 #### ctrl.map
 
@@ -117,7 +117,7 @@ mnemoniku.
 #### \*.tst
 
 Kada je sistem uspešno konfigurisan, program traži od korisnika da
-navede ime neke .tst datoteke koja će sadržati niz ***sc***  vrednosti. Ove
+navede ime neke .tst datoteke koja će sadržati niz *sc*  vrednosti. Ove
 vrednosti se tumače prema prethodnoj konfiguraciji i rezultat tumačenja
 se ispisuje na ekran. Vrednost 400 predstavlja kraj datoteke.
 
@@ -168,15 +168,14 @@ Tumačenje:
 
 Program radi po sledećem toku:
 
-1. Čitanje konfiguracionih datoteka i popunjavanje globalnih nizova /
-tabela se izvršava jednom na početku programa.
+1. Čitanje konfiguracionih datoteka i popunjavanje globalnih nizova / tabela se izvršava jednom na početku programa.
 
-2. Program pita korisnika za ime datoteke koja sadrži ***sc***  vrednosti.
+2. Program pita korisnika za ime datoteke koja sadrži *sc*  vrednosti.
 
 3. Scan code vrednosti se čitaju jedna po jedna.
 
-4. Parsiranje ***sc***  vrednosti se radi poptuno u assembly. C funkcija
-koja radi parsiranje ima potpis: <br>`int process\_scancode(int scancode, char\* buffer)`
+4. Parsiranje *sc*  vrednosti se radi poptuno u assembly. C funkcija
+koja radi parsiranje ima potpis: <br> *int process\_scancode(int scancode, char\* buffer)*
 
 	1. Prvi argument predstavlja scancode koji se parsira.
 
@@ -187,7 +186,7 @@ koja radi parsiranje ima potpis: <br>`int process\_scancode(int scancode, char\*
 
 	4. Dozvoljeno je otvoriti više od jednog inline assembly bloka.
 
-5. Nakon što se isparsira jedna ***sc***  vrednost, dobijeni bafer se
+5. Nakon što se isparsira jedna *sc*  vrednost, dobijeni bafer se
 ispisuje na terminalu, i čita se naredna vrednost iz datoteke.
 
 6. Kada se datoteka pročita u celosti, vraćamo se na korak 2.
