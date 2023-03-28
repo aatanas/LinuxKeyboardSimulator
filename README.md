@@ -1,34 +1,33 @@
 # LinuxKeyboardSimulator
 
-Cilj programa je napraviti simulaciju tastature. Program je napisan u C i assembly.  
+The goal of the program is to create a keyboard simulation. The program is written in C and assembly.
 
-Program podržava sledeće funkcionalnosti:
+The following functionalities are supported:
 
-- Čitanje rasporeda karaktera po sken
-  kodovima.
+- Reading character layout per scan
+   codes.
 
-- Čitanje tabele mnemonika.
+- Reading the mnemonic table.
 
-- Čitanje niza sken kodova i njihova interpretacija
+- Reading a series of scan codes and their interpretation
   
-  - Posebne funkcionalnosti za shift, ctrl i alt
+   - Special functionalities for shift, ctrl and alt
 
-- Prikaz odgovarajućih karaktera na ekranu.
+- Display the corresponding characters on the screen.
 
-### Opis sistema
+### System description
 
-Kod svake tastature, pritisak i otpuštanje tastera se vezuje za
-jedinstveni broj - scan code (*sc*  dalje u tekstu). Tastatura
-operativnom sistemu prosleđuje *sc*  pri svakom pritisku ili otpuštanju
-tastera, operativni sistem ih tumači i prosleđuje dalje aplikacijama. U
-ovoj simulaciji, posebni tasteri - shift, ctrl i alt će imati fiksirane
-*sc* . Za sve ostale tastere postoji spisak koji je naveden u datoteci
-scancodes.tbl koji navodi odgovarajući *sc*  za sva "mala" i "velika"
-slova.
-
+With every keyboard, key presses and releases are bound to
+unique number - scan code (*sc* hereinafter). Keyboard
+passes *sc* to the operating system on every press or release
+keys, the operating system interprets them and passes them on to applications. 
+In this simulation, special keys - shift, ctrl and alt will have fixed *sc*. 
+All other keys are listed in the file scancodes.tbl which lists the corresponding 
+*sc* for all "lowercase" and "uppercase" letters.
 
 
-Fiksirane *sc*  vrednosti:
+
+Fixed *sc* values:
 
 | \-   | shift | ctrl | alt |
 | ---- | ----- | ---- | --- |
@@ -37,158 +36,157 @@ Fiksirane *sc*  vrednosti:
 
 
 
-Scan code 400 u ovom sistemu predstavlja kraj datoteke.
+Scan code 400 in this system represents the end of the file.
 
-Pored toga, ovaj sistem podržava ispis proizvoljnog ASCII karaktera
-pri držanju alt, i ispisivanje unapred definisanih poruka pomoću prečica
-uz ctrl taster.
+In addition, this system supports the printing of arbitrary ASCII characters
+while holding alt, and printing predefined messages using shortcuts
+with the ctrl key.
 
-Program treba prvo da pročita dve datoteke koje opisuju konfiguraciju
-sistema - scancodes.tbl i ctrl.map. Nakon toga program počinje sa
-interaktivnim radom i korisnik unosi naziv datoteke (na primer:
-test1.tst) koja sadrži niz *sc*  vrednosti. Ovi *sc*  se tumače i
-odgovarajući rezultat se ispisuje na ekranu. Tastatura ima četiri režima
-rada:
+The program should first read two files that describe the configuration
+system - scancodes.tbl and ctrl.map. After that the program starts to be
+interactive and the user enters the file name (for example:
+test1.tst) which contains an array of *sc* values. These *sc* are interpreted i
+the corresponding result is printed on the screen. The keyboard has four modes
+work:
 
-- Bez kontrolnih tastera - ispisuju se "mala" slova pročitana iz
-  scancodes.tbl. 
+- Without control keys - "small" letters read from are printed
+   scancodes.tbl.
 
--  Pritisnuto shift - ispisuju se "velika" slova pročitana
-  iz scancodes.tbl. 
+- Pressed shift - "big" letters read are printed
+   from scancodes.tbl.
 
--  Pritisnuto ctrl - unosi se mnemonik naveden u
-  ctrl.map.
+- Ctrl pressed - the mnemonic specified in is entered
+   ctrl.map.
 
-- Pritisnuto alt - unosi se ASCII kod.
+- Pressed alt - ASCII code is entered.
 
-*Napomena:* kod kontrolnog tastera alt se rezultat prikazuje tek kada se
-pročita *sc*  za otpuštanje tog tastera (302).
+*Note:* with the alt control key, the result is displayed only when
+read *sc* to release that key (302).
 
-### Ulazni podaci
+### Input data
 
-Ulazni podaci se navode preko tri odvojene datoteke:
+Input data is provided via three separate files:
 
 - scancodes.tbl
 
 - ctrl.map
 
-- test1.tst - ime ove datoteke se unosi pri startu programa
+- test1.tst - the name of this file is entered at the start of the program
 
 #### scancodes.tbl
 
-U ovom sistemu, datoteka scancodes.tbl će da ima spisak karaktera koji
-treba da se vežu za *sc* , pritom, *sc*  karaktera je dat implicitno -
-počinje od 0 i inkrementira se za 1 za svaki karakter. Spisak karaktera
-za "mala" i "velika" slova je odvojen znakom za novi red.
+In this system, the scancodes.tbl file will have a list of characters that
+should be bound to *sc*, while the *sc* character is given implicitly -
+starts at 0 and increments by 1 for each character. List of characters
+"lowercase" and "uppercase" letters are separated by a newline character.
 
-Primer datoteke:
+Example file:
 
 ```
-abcd()1234                 
-ABCD{}!"\#\$ 
+abcd()1234
+ABCD{}!"\#\$
 ```
 
-Ovo bi bila datoteka koja opisuje sistem sa 10 *sc* . Karakter 'a' je
-opisan sa *sc*  0, karakter 'b' sa *sc*  1, i tako dalje, do karaktera
-'\$' koji je opisan sa *sc*  9 dok je pritisnuto shift.
+This would be a system description file with 10 *sc* . The character 'a' is
+described by *sc* 0, character 'b' by *sc* 1, and so on, up to the character
+'\$' which is described by *sc* 9 while holding down shift.
 
-Maksimalan broj *sc*  u sistemu je 128.
+The maximum number of *sc* in the system is 128.
 
 #### ctrl.map
 
-Pored običnih slova program podržava i mnemonike, ili tzv. prečice.
-Mnemonici su zadati u posebnoj datoteci - ctrl.map - koja je oblika:
+In addition to ordinary letters, the program also supports mnemonics, or so-called. shortcuts.
+Mnemonics are specified in a special file - ctrl.map - which is of the form:
 
 ```
 3
-q tekst koji se ispisuje kada se pritisne ctrl+q
-d dobro jutro
-Q neki treci tekst
+q text that is printed when ctrl+q is pressed
+d good morning
+Q some third text
 ```
 
-Na početku datoteke se navodi broj N (1 ≤ N ≤ 16) koji predstavlja
-koliko ima mnemonika. Nakon toga sledi N linija gde prvi karakter
-predstavlja prečicu, a ostatak teksta je ono što treba ispisati kada se
-unese taj karakter uz pritisnuto ctrl. Tekst koji treba ispisati će biti
-maksimalne dužine 64 karaktera. Prečica se navodi kao ASCII karakter.
-Ako ASCII karaktera nema u scancodes.tbl, onda ne može da se pristupi
-mnemoniku.
+At the beginning of the file, the number N (1 ≤ N ≤ 16) that it represents is stated
+how many mnemonics there are. This is followed by an N line where the first character
+represents a shortcut, and the rest of the text is what should be printed when
+enter that character with ctrl pressed. The text to be printed will be
+maximum length 64 characters. The shortcut is specified as an ASCII character.
+If the ASCII character is not in scancodes.tbl, then it cannot be accessed
+mnemonic.
 
 #### \*.tst
 
-Kada je sistem uspešno konfigurisan, program traži od korisnika da
-navede ime neke .tst datoteke koja će sadržati niz *sc*  vrednosti. Ove
-vrednosti se tumače prema prethodnoj konfiguraciji i rezultat tumačenja
-se ispisuje na ekran. Vrednost 400 predstavlja kraj datoteke.
+When the system is successfully configured, the program prompts the user to
+specifies the name of a .tst file that will contain an array of *sc* values. These
+the values are interpreted according to the previous configuration and the result of the interpretation
+is printed on the screen. A value of 400 represents the end of the file.
 
-Primer datoteke:
+Example file:
 
 ```
-200 
-1 
-300 
-0 
-1 
-0 
-202 
-8 
-7 
-302 
-201 
-3 
-301 
+200
+1
+300
+0
+1
+0
+202
+8
+7
+302
+201
+3
+301
 400
 ```
 
-Uz konfiguracije navedene u prethodnim delovima, ispis za ovu
-datoteku će biti:
+In addition to the configurations listed in the previous sections, the printout for this one
+the file will be:
 
 ```
-Baba dobro jutro
+Baba good morning
 ```
 
-Tumačenje:
+Interpretation:
 
 ```
-200 - shift down 
-1 - B 
-300 - shift up 
-0 - a 
-1 - b 
-0 - a 
-202 - alt down 
-8 - 3 
-7 - 2 
-302 - alt up (32 je razmak, tj. space) 
-201 - ctrl down 
-3 - ctrl + d je “dobro jutro” 
-301 - ctrl up 
-400 - kraj
+200 - shift down
+1 - B
+300 - shift up
+0 - a
+1 - b
+0 - a
+202 - alt down
+8 - 3
+7 - 2
+302 - alt up (32 is space)
+201 - ctrl down
+3 - ctrl + d is "good morning"
+301 - ctrl up
+400 - the end
 ```
 
-Program radi po sledećem toku:
+The program works according to the following flow:
 
-1. Čitanje konfiguracionih datoteka i popunjavanje globalnih nizova / tabela se izvršava jednom na početku programa.
+1. Reading configuration files and filling global arrays / tables is executed once at the beginning of the program.
 
-2. Program pita korisnika za ime datoteke koja sadrži *sc*  vrednosti.
+2. The program asks the user for the name of the file containing the *sc* values.
 
-3. Scan code vrednosti se čitaju jedna po jedna.
+3. Scan code values are read one by one.
 
-4. Parsiranje *sc*  vrednosti se radi poptuno u assembly. C funkcija
-koja radi parsiranje ima potpis: <br> *int process\_scancode(int scancode, char\* buffer)*
+4. Parsing of *sc* values is done entirely in assembly. C function
+which does the parsing has the signature: <br> *int process\_scancode(int scancode, char\* buffer)*
 
-	1. Prvi argument predstavlja scancode koji se parsira.
+	1. The first argument represents the scancode to be parsed.
 
-	2. Drugi argument je bafer u koji treba smestiti rezultat parsiranja (tipično samo jedan karakter ćemo smestiti u bafer - više karaktera se smešta samo pri unosu mnemonika).
+	2. The second argument is the buffer in which the parsing result should be placed (typically we will place only one character in the buffer - more characters are placed only when entering the mnemonic).
 
-	3. Povratna vrednost predstavlja broj karaktera koji su upisani u bafer. 
-	4. Dozvoljeno je deklarisati jednu int promenljivu koja će biti povratna vrednost za funkciju. Osim toga, sva logika funkcije treba da je napisana u inline assembly bloku.
+	3. The return value represents the number of characters written into the buffer.
+	
+	4. There is only one int variable that will be the return value for the function. Other than that, all logic functions are written in an inline assembly block.
 
-	4. Dozvoljeno je otvoriti više od jednog inline assembly bloka.
+5. After parsing one *sc* value, the resulting buffer is
+is printed to the terminal, and the next value is read from the file.
 
-5. Nakon što se isparsira jedna *sc*  vrednost, dobijeni bafer se
-ispisuje na terminalu, i čita se naredna vrednost iz datoteke.
+6. When the file is read in its entirety, we return to step 2.
 
-6. Kada se datoteka pročita u celosti, vraćamo se na korak 2.
-
-7. Ako se kao naziv datoteke unese komanda "exit", program se završava.
+7. If the command "exit" is entered as the file name, the program ends.
